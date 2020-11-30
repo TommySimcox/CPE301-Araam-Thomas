@@ -25,7 +25,6 @@
 #define lcd_display_d5 12
 #define lcd_display_d6 11
 #define lcd_display_d7 10
-#define lcd_display_refresh_tick 5000
 
 volatile unsigned char * motor_porte = (unsigned char *) 0x22;
 volatile unsigned char * motor_ddre = (unsigned char *) 0x21;
@@ -88,10 +87,6 @@ void setup() {
     //rtc_clock.setDateTime(2020, 11, 29, 12, 56, 00);
     
     lcd_display.begin(16, 2);
-    /**lcd_display_timsk3 |= 0b00000001;
-    *lcd_display_tccr3a &= 0b00000000;
-    *lcd_display_tccr3b |= 0b11111001;*/
-
 
 }
 
@@ -113,6 +108,7 @@ void loop() {
 
         case system_state_disabled:
 
+            lcd_display_update_flag = 1;
             *led_portl |= led_disabled_bit;
             *led_portl &= ~(led_idle_bit);
             *led_portl &= ~(led_error_bit);
@@ -243,25 +239,6 @@ ISR (TIMER1_OVF_vect) {
     *temperature_humidity_sensor_tccr1b |= 0b11111001;
   
 }
-
-/*
-ISR (TIMER3_OVF_vect) {
-
-    *lcd_display_tccr3b &= 0b11111000;
-    *lcd_display_tcnt3 = (unsigned int) (65536 - lcd_display_refresh_tick);
-    if (lcd_display_update_flag == 1) {
-      
-      lcd_display.clear();
-      lcd_display.print("Temperature:");
-      lcd_display.print(temperature);
-      lcd_display.setCursor(0,1);
-      lcd_display.print("Humidity:");
-      lcd_display.print(temperature);
-      
-    }
-    *lcd_display_tccr3b |= 0b11111001;
-  
-}*/
 
 void send_timestamp() {
 
