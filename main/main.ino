@@ -4,9 +4,9 @@
  * Description: A simple swamp cooler program that has four states all 
  * having specific tasks of switching different states and managing 
  * external sensors. 
- * -> This is a interrupt based program. Interrupts are mainly used for 
+ * -> This is an interrupt-based program. Interrupts are mainly used for 
  * updating sensor values. Sensors using interrupts to update sensor
- * data include Water Level Module, Push Button, and Temperature/Humidity 
+ * data include the Water Level Module, Push Button, and Temperature/Humidity 
  * Sensor.
  * -> Program includes two different flags to print and or update certain
  * devices of the swamp cooler. These flags are used to either update the 
@@ -27,7 +27,7 @@
  *  to the Error State.
  *  -> 300 is 1 inch(s) of water. 
  *  temperature_threshold: temperature_threshold is used to define the 
- *  water level threshold which determines the program moves from Idle 
+ *  water level threshold which determines when the program moves from Idle 
  *  State to Running State.
  *  -> 25 Celsius is the temperature.
  */
@@ -39,11 +39,11 @@
  *  PROGRAM MACROS
  *  
  *  These macros are mainly used to easily define specific bits
- *  and or values for pins within the program. These serve to 
+ *  and/or values for pins within the program. These serve to 
  *  two purposes.
  *  -> Easily provide a DRY solution to changing only one value
  *  rather than multiple if a device bit is re-wired.
- *  -> Provide a friendly user facing program by abstracting 
+ *  -> Provide a friendly user-facing program by abstracting 
  *  values with identifiable names that associate their 
  *  purpose and specific purpose in one name.
  */
@@ -135,7 +135,7 @@ void setup() {
 /*
  * PROGRAM STATES
  * 
- * -> All States: The LCD is continusly refreshing every second with
+ * -> All States: The LCD is continuously refreshing every second with
  * new temperature/humidity values retrieved from DHT11 interrupt  
  * timer with sampling happening 900 Hz.
  * -> Disabled State: No monitoring is occuring with all external
@@ -145,10 +145,10 @@ void setup() {
  * -> Idle State: Monitoring of all external devices happens
  * during this state with two state switch conditions in tow.
  * Idle State can move to either Error State or Running State 
- * with their own respective conditions. It is made sure that 
- * corresponding LED is turned on only and no vent activity 
- * is occuring.
- * -> Error State: Monitoring of water level is occuring 
+ * with their own respective conditions. It is made sure that the 
+ * corresponding LED is turned on and no vent activity 
+ * is occurring.
+ * -> Error State: Monitoring of water level is occurring 
  * this state with emphasis of the LCD display responding
  * to this state. LCD update flag is set to zero meaning 
  * no refreshing of the display is to occur ensuring 
@@ -157,12 +157,12 @@ void setup() {
  * to Idle State once the water level is at or above 
  * the water_level_threshold.
  * -> Running State: Motor is turned on during this state
- * with the only monitoring occuring on the Temperature/Humidity 
+ * with the only monitoring occurring on the Temperature/Humidity 
  * Sensor and Water Level sensor. Mainly the value temperature and
- * water_level is monitored untill it is above or equal to 
+ * water_level is monitored until it is above or equal to 
  * temperature_threshold. Two state changes could occur at this
  * state being from Running State to Idle State or Running
- * State to Error State. This occurs with their conditons being met.
+ * State to Error State. This occurs then their conditons are met.
  * Vital function that occurs during enterance and exit of this state
  * is toggling of the motor and a serial send of the date of motor
  * being turned on and off respectively.
@@ -282,13 +282,13 @@ void loop() {
 /*
  * PROGRAM INTERRUPTS
  * 
- * -> INT3_vect: This interrupt is made to start a interrupt in the event
- * that the Push Button is pressed. During a external interrupt request 
+ * -> INT3_vect: This interrupt is made to start an interrupt in the event
+ * that the Push Button is pressed. During an external interrupt request 
  * from the Push Button, debouncing occures to make sure such button 
  * wasn't a false activation. Once checked, state switching occurs
  * being any State can move from it's Current State to Disabled State
  * by setting the system_state value.
- * -> ADC_vect: This interrupt is made to start a interrupt to the Stack
+ * -> ADC_vect: This interrupt is made to start an interrupt to the Stack
  * once ADC has completed conversion of reading from the Water Level Sensor.
  * Once completed, this value is then made to be set for water_level.
  * -> TIMER1_OVF_vect: This interrupt is made to continuously update the
